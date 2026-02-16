@@ -64,10 +64,10 @@ const ItemCard: React.FC<ItemCardProps> = ({ item, onDelete, onEdit }) => {
             onClick={() => onEdit(item.id)}
             style={{ marginRight: "8px" }}
           >
-            ✏️ Editar
+             Editar
           </button>
         )}
-        <button onClick={handleDelete}>🗑️ Eliminar</button>
+        <button onClick={handleDelete}> Eliminar</button>
       </div>
     </div>
   );

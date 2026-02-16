@@ -19,7 +19,7 @@ const ItemList: React.FC<ItemListProps> = ({ productos, onDelete, onEdit }) => {
   if (productos.length === 0) {
     return (
       <div className="empty-state" style={{ textAlign: "center", marginTop: "20px" }}>
-        <p>📭 No hay productos para mostrar</p>
+        <p> No hay productos para mostrar</p>
         <p>Agrega tu primer producto usando el formulario de arriba</p>
       </div>
     );
