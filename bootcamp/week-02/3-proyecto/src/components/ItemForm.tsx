@@ -1,232 +1,190 @@
-import { useState, useEffect } from 'react';
-import { Item } from '../types';
+import { useState, useEffect } from "react";
+import { ProductoDeportivo, CategoriaDeportiva, EstadoProducto } from "../types";
 
-/**
- * PROPS: ItemForm
- */
 interface ItemFormProps {
-  onAdd: (item: Omit<Item, 'id'>) => void;
-  onUpdate: (id: number, updates: Partial<Item>) => void;
-  editingItem?: Item;
-  onCancelEdit: () => void;
+  onAdd: (producto: Omit<ProductoDeportivo, "id">) => void;
+  editingItem?: ProductoDeportivo;
+  onUpdate?: (id: number, updates: Partial<ProductoDeportivo>) => void;
+  onCancelEdit?: () => void;
 }
 
-/**
- * COMPONENTE: ItemForm
- *
- * Formulario para agregar o editar elementos.
- * Se adapta automáticamente según si hay un elemento siendo editado.
- */
 const ItemForm: React.FC<ItemFormProps> = ({
   onAdd,
-  onUpdate,
   editingItem,
+  onUpdate,
   onCancelEdit,
 }) => {
-  // ============================================
-  // ESTADO DEL FORMULARIO
-  // ============================================
-
-  // TODO: Define el estado inicial del formulario según tu dominio
-  // Ejemplo para referencia (ADAPTAR):
   const initialState = {
-    name: '',
-    // TODO: Agregar más campos según tu dominio
-    // Ejemplos:
-    // - Biblioteca: author: '', isbn: '', available: true, category: 'fiction'
-    // - Farmacia: price: 0, stock: 0, requiresPrescription: false, category: 'analgésico'
-    // - Gimnasio: email: '', plan: 'básico', startDate: '', active: true
+    nombre: "",
+    precio: 0,
+    categoria: "Calzado" as CategoriaDeportiva,
+    stock: 0,
+    marca: "",
+    estado: "Disponible" as EstadoProducto,
   };
 
   const [formData, setFormData] = useState(initialState);
 
-  // ============================================
-  // EFECTO: PRE-LLENAR FORMULARIO AL EDITAR
-  // ============================================
-
   useEffect(() => {
     if (editingItem) {
-      // TODO: Pre-llenar el formulario con los datos del elemento a editar
-      // Tip: Extrae solo los campos necesarios (sin id)
       const { id, ...rest } = editingItem;
       setFormData(rest);
     } else {
-      // Si no hay elemento editando, limpiar formulario
       setFormData(initialState);
     }
   }, [editingItem]);
 
-  // ============================================
-  // HANDLERS
-  // ============================================
-
-  /**
-   * Manejar cambios en inputs de texto
-   */
+  // Handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    // TODO: Actualizar el estado del formulario
-    // Tip: Usa spread operator para mantener los demás campos
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: name === "precio" || name === "stock" ? Number(value) : value });
   };
 
-  /**
-   * Manejar cambios en selects
-   */
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  /**
-   * Manejar cambios en checkboxes
-   */
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
-    setFormData({ ...formData, [name]: checked });
-  };
-
-  /**
-   * Validar datos del formulario
-   */
+  // Validación
   const validate = (): boolean => {
-    // TODO: Implementar validación según tu dominio
-    // Ejemplos:
-    // - Campos requeridos no vacíos
-    // - Números positivos
-    // - Emails válidos
-    // - Fechas válidas
-
-    if (!formData.name.trim()) {
-      alert('El nombre es requerido');
+    if (!formData.nombre.trim()) {
+      alert("El nombre es requerido");
       return false;
     }
-
-    // TODO: Agregar más validaciones específicas de tu dominio
-
+    if (formData.precio <= 0) {
+      alert("El precio debe ser mayor a 0");
+      return false;
+    }
+    if (!formData.marca.trim()) {
+      alert("La marca es requerida");
+      return false;
+    }
+    if (formData.stock < 0) {
+      alert("El stock no puede ser negativo");
+      return false;
+    }
     return true;
   };
 
-  /**
-   * Manejar submit del formulario
-   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // TODO: Validar datos
     if (!validate()) return;
 
-    // TODO: Agregar o actualizar según corresponda
-    if (editingItem) {
-      // Modo edición: actualizar
+    if (editingItem && onUpdate && onCancelEdit) {
       onUpdate(editingItem.id, formData);
       onCancelEdit();
     } else {
-      // Modo agregar: crear nuevo
       onAdd(formData);
     }
 
-    // TODO: Limpiar formulario
     setFormData(initialState);
   };
 
-  // ============================================
-  // RENDER
-  // ============================================
-
   return (
-    <div className="form-container">
-      <h2>{editingItem ? '✏️ Editar Elemento' : '➕ Agregar Elemento'}</h2>
-
-      <form
-        onSubmit={handleSubmit}
-        className="item-form">
-        {/* Campo: Nombre */}
+    <div className="form-container" style={{ marginBottom: "20px" }}>
+      <h2>{editingItem ? "✏️ Editar Producto" : "➕ Agregar Producto"}</h2>
+      <form onSubmit={handleSubmit} className="item-form">
+        {/* Nombre */}
         <div className="form-group">
-          <label htmlFor="name">Nombre *</label>
+          <label htmlFor="nombre">Nombre *</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={formData.name}
+            id="nombre"
+            name="nombre"
+            value={formData.nombre}
             onChange={handleChange}
-            placeholder="Ingresa el nombre"
+            placeholder="Nombre del producto"
             required
           />
         </div>
 
-        {/* TODO: Agregar más campos según tu dominio */}
-        {/* Ejemplos:
-          
-          Biblioteca:
-          <div className="form-group">
-            <label htmlFor="author">Autor *</label>
-            <input
-              type="text"
-              id="author"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="isbn">ISBN *</label>
-            <input
-              type="text"
-              id="isbn"
-              name="isbn"
-              value={formData.isbn}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="category">Categoría</label>
-            <select
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleSelectChange}
-            >
-              <option value="fiction">Ficción</option>
-              <option value="non-fiction">No Ficción</option>
-              <option value="science">Ciencia</option>
-            </select>
-          </div>
-          
-          <div className="form-group">
-            <label>
-              <input
-                type="checkbox"
-                name="available"
-                checked={formData.available}
-                onChange={handleCheckboxChange}
-              />
-              Disponible
-            </label>
-          </div>
-        */}
+        {/* Precio */}
+        <div className="form-group">
+          <label htmlFor="precio">Precio *</label>
+          <input
+            type="number"
+            id="precio"
+            name="precio"
+            value={formData.precio}
+            onChange={handleChange}
+            min={0}
+            required
+          />
+        </div>
+
+        {/* Marca */}
+        <div className="form-group">
+          <label htmlFor="marca">Marca *</label>
+          <input
+            type="text"
+            id="marca"
+            name="marca"
+            value={formData.marca}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* Categoría */}
+        <div className="form-group">
+          <label htmlFor="categoria">Categoría</label>
+          <select
+            id="categoria"
+            name="categoria"
+            value={formData.categoria}
+            onChange={handleSelectChange}
+          >
+            <option value="Calzado">Calzado</option>
+            <option value="Máquinas">Máquinas</option>
+            <option value="Accesorios">Accesorios</option>
+            <option value="Ropa">Ropa</option>
+          </select>
+        </div>
+
+        {/* Stock */}
+        <div className="form-group">
+          <label htmlFor="stock">Stock</label>
+          <input
+            type="number"
+            id="stock"
+            name="stock"
+            value={formData.stock}
+            onChange={handleChange}
+            min={0}
+          />
+        </div>
+
+        {/* Estado */}
+        <div className="form-group">
+          <label htmlFor="estado">Estado</label>
+          <select
+            id="estado"
+            name="estado"
+            value={formData.estado}
+            onChange={handleSelectChange}
+          >
+            <option value="Disponible">Disponible</option>
+            <option value="Agotado">Agotado</option>
+            <option value="Descontinuado">Descontinuado</option>
+          </select>
+        </div>
 
         {/* Botones */}
-        <div className="form-actions">
-          <button
-            type="submit"
-            className="btn btn-primary">
-            {editingItem ? 'Actualizar' : 'Agregar'}
+        <div className="form-actions" style={{ marginTop: "12px" }}>
+          <button type="submit" className="btn btn-primary">
+            {editingItem ? "Actualizar" : "Agregar"}
           </button>
 
-          {editingItem && (
+          {editingItem && onCancelEdit && (
             <button
               type="button"
               className="btn btn-secondary"
               onClick={() => {
                 onCancelEdit();
                 setFormData(initialState);
-              }}>
+              }}
+              style={{ marginLeft: "8px" }}
+            >
               Cancelar
             </button>
           )}

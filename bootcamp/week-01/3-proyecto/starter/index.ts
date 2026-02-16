@@ -2,7 +2,7 @@
 // PROYECTO SEMANAL: MODELADO DE ENTIDADES - TIENDA DEPORTIVA
 // ============================================
 
-console.log(' BIENVENIDO A LA TIENDA DE ERIK CRESPO SPORTYK RETAIL\n');
+console.log(' BIENVENIDO A LA TIENDA DE SAMUEL DUARTE SPORTYK RETAIL\n');
 
 // ============================================
 // 1. Define las entidades principales
