@@ -10,7 +10,7 @@ const inventario: ProductoDeportivo[] = [];
 
 function agregarProducto(prod: ProductoDeportivo): void {
   inventario.push(prod);
-  console.log(`✅ Producto agregado: ${prod.nombre}`);
+  console.log(`El Producto agregado: ${prod.nombre}`);
 }
 
 function obtenerDisponibles(): ProductoDeportivo[] {
