@@ -16,7 +16,7 @@ export const Dashboard: React.FC = () => {
         <div className="header-brand">
           <span className="header-logo">🏆</span>
           <div>
-            <h1>SPOTYK RETAIL Dashboard</h1>
+            <h1>SPORTYK RETAIL Dashboard</h1>
             <p className="header-subtitle">Panel de Control  Tienda de Equipamiento Deportivo</p>
           </div>
         </div>
