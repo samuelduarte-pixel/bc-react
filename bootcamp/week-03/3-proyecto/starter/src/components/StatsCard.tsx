@@ -3,7 +3,7 @@ import type { Stats } from '../types';
 import { fetchStats } from '../utils/api';
 
 // ============================================
-// COMPONENTE: StatsCard - Estadísticas de la Tienda
+// COMPONENTE: StatsCard  Estadísticas de la Tienda
 // ============================================
 
 export const StatsCard: React.FC = () => {

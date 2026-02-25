@@ -3,7 +3,7 @@ import type { RealTimeData } from '../types';
 import { fetchRealTimeData } from '../utils/api';
 
 // ============================================
-// COMPONENTE: RealTimeIndicator - Pedidos Activos en Tiempo Real
+// COMPONENTE: RealTimeIndicator  Pedidos Activos en Tiempo Real
 // ============================================
 
 const POLLING_INTERVAL = 5000; // 5 segundos

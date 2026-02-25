@@ -1,5 +1,5 @@
 // ============================================
-// API - Tienda de Equipamiento Deportivo
+// API  Tienda de Equipamiento Deportivo
 // ============================================
 
 import type { Item, Stats, RealTimeData } from '../types';
@@ -9,7 +9,7 @@ const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // ============================================
-// DATOS MOCK - Productos deportivos
+// DATOS MOCK  Productos deportivos
 // ============================================
 
 const MOCK_PRODUCTS: Item[] = [

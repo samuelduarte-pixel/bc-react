@@ -1,5 +1,5 @@
 // ============================================
-// TIPOS E INTERFACES - Tienda de Equipamiento Deportivo
+// TIPOS E INTERFACES  Tienda de Equipamiento Deportivo
 // ============================================
 
 /**

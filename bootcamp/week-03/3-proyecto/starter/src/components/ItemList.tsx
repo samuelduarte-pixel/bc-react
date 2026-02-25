@@ -3,7 +3,7 @@ import type { Item } from '../types';
 import { fetchItems, searchItems, formatPrice } from '../utils/api';
 
 // ============================================
-// COMPONENTE: ItemList - Catálogo de Productos Deportivos
+// COMPONENTE: ItemList  Catálogo de Productos Deportivos
 // ============================================
 
 const CATEGORY_LABELS: Record<string, string> = {
