@@ -1,76 +1,47 @@
 // ============================================
-// TIPOS Y INTERFACES DEL PROYECTO
+// TIPOS E INTERFACES - Tienda de Equipamiento Deportivo
 // ============================================
-// Adapta estas interfaces a tu dominio asignado
-
-// NOTA PARA EL APRENDIZ:
-// Estas interfaces son genéricas. Debes personalizarlas según tu dominio.
-// Ejemplos:
-// - Biblioteca: Book con { id, title, author, isbn, available }
-// - Farmacia: Medicine con { id, name, price, stock, expirationDate }
-// - Gimnasio: Member con { id, name, membershipType, joinDate, active }
-// - Restaurante: Dish con { id, name, category, price, available }
 
 /**
- * Interfaz principal para elementos de tu dominio
- * TODO: Renombrar y adaptar a tu contexto
- *
- * Ejemplos por dominio:
- * - Book (biblioteca)
- * - Medicine (farmacia)
- * - Member (gimnasio)
- * - Dish (restaurante)
+ * Producto de la tienda deportiva
  */
 export interface Item {
   id: number;
   name: string;
   description: string;
-  // TODO: Agregar propiedades específicas de tu dominio
-  // Ejemplos:
-  // - Biblioteca: author: string, isbn: string, available: boolean
-  // - Farmacia: price: number, stock: number, category: string
-  // - Gimnasio: membershipType: string, joinDate: string, active: boolean
-  // - Restaurante: category: string, price: number, ingredients: string[]
+  category: 'futbol' | 'basketball' | 'tennis' | 'running' | 'natacion' | 'gym';
+  price: number;
+  stock: number;
+  brand: string;
+  rating: number;
+  available: boolean;
+  imageEmoji: string;
 }
 
 /**
- * Interfaz para estadísticas del dashboard
- * TODO: Adaptar métricas a tu dominio
- *
- * Ejemplos por dominio:
- * - Biblioteca: totalBooks, borrowedToday, availableRooms
- * - Farmacia: totalProducts, dailySales, lowStockItems
- * - Gimnasio: totalMembers, todayAttendance, activeClasses
- * - Restaurante: totalDishes, activeOrders, averageRating
+ * Estadísticas del dashboard de la tienda
  */
 export interface Stats {
-  total: number;
-  active: number;
-  percentage: number;
-  // TODO: Agregar métricas específicas de tu dominio
+  total: number;        // Total de productos
+  active: number;       // Productos disponibles
+  percentage: number;   // Porcentaje de disponibilidad
+  dailySales: number;   // Ventas del día
+  lowStock: number;     // Productos con stock bajo
 }
 
 /**
- * Interfaz para datos en tiempo real
- * TODO: Definir qué dato de tu dominio se actualiza en tiempo real
- *
- * Ejemplos por dominio:
- * - Biblioteca: roomOccupancy (ocupación de salas)
- * - Farmacia: pendingOrders (pedidos pendientes)
- * - Gimnasio: currentOccupancy (personas en el gimnasio ahora)
- * - Restaurante: occupiedTables (mesas ocupadas)
+ * Datos en tiempo real - pedidos activos
  */
 export interface RealTimeData {
   value: number;
   label: string;
-  unit: string; // ej: "personas", "mesas", "libros"
-  lastUpdated: string; // timestamp de última actualización
-  // TODO: Agregar campos adicionales si es necesario
+  unit: string;
+  lastUpdated: string;
+  trend: 'up' | 'down' | 'stable';
 }
 
 /**
- * Estado genérico para manejar peticiones asíncronas
- * No necesitas modificar esta interfaz
+ * Estado genérico para peticiones asíncronas
  */
 export interface AsyncState<T> {
   data: T | null;
@@ -79,14 +50,10 @@ export interface AsyncState<T> {
 }
 
 /**
- * Tipo para filtros de búsqueda (opcional)
- * TODO: Agregar filtros relevantes a tu dominio si implementas búsqueda
+ * Filtros de búsqueda de productos
  */
 export interface SearchFilters {
   query: string;
-  // TODO: Agregar campos de filtro específicos
-  // Ejemplos:
-  // - Biblioteca: category: string, available: boolean
-  // - Farmacia: priceRange: [number, number], inStock: boolean
-  // - Gimnasio: membershipType: string, active: boolean
+  category: string;
+  available: boolean;
 }

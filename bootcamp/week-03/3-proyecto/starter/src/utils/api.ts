@@ -1,52 +1,138 @@
 // ============================================
-// FUNCIONES DE API Y DATOS MOCK
+// API - Tienda de Equipamiento Deportivo
 // ============================================
-// Implementa funciones para obtener datos de tu dominio
 
 import type { Item, Stats, RealTimeData } from '../types';
 
-// ============================================
-// CONFIGURACIÓN
-// ============================================
-
-// TODO: Configura la URL base de tu API o usa datos mock
-const API_BASE_URL = 'https://jsonplaceholder.typicode.com'; // Cambiar si usas API real
-
-// Helper para simular latencia de red (útil con datos mock)
+// Simula latencia de red
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // ============================================
-// DATOS MOCK (EJEMPLO)
+// DATOS MOCK - Productos deportivos
 // ============================================
 
-// TODO: Reemplaza estos datos mock con datos de tu dominio
-// Ejemplos por dominio:
-// - Biblioteca: MOCK_BOOKS
-// - Farmacia: MOCK_MEDICINES
-// - Gimnasio: MOCK_MEMBERS
-// - Restaurante: MOCK_DISHES
-
-const MOCK_ITEMS: Item[] = [
+const MOCK_PRODUCTS: Item[] = [
   {
     id: 1,
-    name: 'Item 1',
-    description: 'Descripción del item 1',
-    // TODO: Agregar propiedades específicas
+    name: 'Balón de Fútbol Pro',
+    description: 'Balón oficial FIFA, cuero sintético premium, talla 5',
+    category: 'futbol',
+    price: 89900,
+    stock: 23,
+    brand: 'Nike',
+    rating: 4.8,
+    available: true,
+    imageEmoji: '⚽',
   },
   {
     id: 2,
-    name: 'Item 2',
-    description: 'Descripción del item 2',
-    // TODO: Agregar propiedades específicas
+    name: 'Zapatillas Running X200',
+    description: 'Suela de amortiguación máxima, transpirable, ideal maratón',
+    category: 'running',
+    price: 349900,
+    stock: 12,
+    brand: 'Adidas',
+    rating: 4.9,
+    available: true,
+    imageEmoji: '👟',
   },
   {
     id: 3,
-    name: 'Item 3',
-    description: 'Descripción del item 3',
-    // TODO: Agregar propiedades específicas
+    name: 'Raqueta de Tenis Carbon',
+    description: 'Marco de carbono ultraligero, encordado incluido, grip L3',
+    category: 'tennis',
+    price: 289000,
+    stock: 8,
+    brand: 'Wilson',
+    rating: 4.7,
+    available: true,
+    imageEmoji: '🎾',
   },
-  // TODO: Agregar más items mock (al menos 5-10)
+  {
+    id: 4,
+    name: 'Balón de Basketball NBA',
+    description: 'Cuero genuino, grip superior, oficial NBA',
+    category: 'basketball',
+    price: 179000,
+    stock: 3,
+    brand: 'Spalding',
+    rating: 4.6,
+    available: true,
+    imageEmoji: '🏀',
+  },
+  {
+    id: 5,
+    name: 'Gafas de Natación Pro',
+    description: 'Antivaho, UV400, correa ajustable, lente espejo',
+    category: 'natacion',
+    price: 45000,
+    stock: 31,
+    brand: 'Speedo',
+    rating: 4.5,
+    available: true,
+    imageEmoji: '🥽',
+  },
+  {
+    id: 6,
+    name: 'Mancuernas Ajustables 20kg',
+    description: 'Set completo 2-20kg, ajuste rápido, agarre antideslizante',
+    category: 'gym',
+    price: 520000,
+    stock: 5,
+    brand: 'PowerFlex',
+    rating: 4.9,
+    available: true,
+    imageEmoji: '🏋️',
+  },
+  {
+    id: 7,
+    name: 'Guayos Fútbol Elite',
+    description: 'Taco de aluminio, cuero canguro, suela TPU, talla 42',
+    category: 'futbol',
+    price: 259000,
+    stock: 0,
+    brand: 'Puma',
+    rating: 4.4,
+    available: false,
+    imageEmoji: '⚽',
+  },
+  {
+    id: 8,
+    name: 'Cinta de Correr Pro',
+    description: 'Motor 3HP, pantalla LED, 16 velocidades, plegable',
+    category: 'gym',
+    price: 2890000,
+    stock: 2,
+    brand: 'TechRun',
+    rating: 4.7,
+    available: true,
+    imageEmoji: '🏃',
+  },
+  {
+    id: 9,
+    name: 'Short Deportivo Dry-Fit',
+    description: 'Tela microfibra, secado rápido, bolsillos laterales',
+    category: 'running',
+    price: 79000,
+    stock: 45,
+    brand: 'Under Armour',
+    rating: 4.3,
+    available: true,
+    imageEmoji: '🩳',
+  },
+  {
+    id: 10,
+    name: 'Tabla de Natación EVA',
+    description: 'Espuma EVA de alta densidad, grip ergonómico, 45x30cm',
+    category: 'natacion',
+    price: 35000,
+    stock: 18,
+    brand: 'AquaMax',
+    rating: 4.2,
+    available: true,
+    imageEmoji: '🏊',
+  },
 ];
 
 // ============================================
@@ -54,142 +140,83 @@ const MOCK_ITEMS: Item[] = [
 // ============================================
 
 /**
- * Obtiene la lista principal de elementos
- * TODO: Implementar fetch real o retornar datos mock adaptados a tu dominio
- *
- * @param signal - AbortSignal para cancelar la petición
- * @returns Promise con array de Items
- *
- * Ejemplos por dominio:
- * - fetchBooks: retorna libros de la biblioteca
- * - fetchMedicines: retorna medicamentos de la farmacia
- * - fetchMembers: retorna miembros del gimnasio
- * - fetchDishes: retorna platillos del restaurante
+ * Obtiene lista de productos deportivos
  */
 export const fetchItems = async (signal?: AbortSignal): Promise<Item[]> => {
-  // TODO: Implementar fetch real o usar mock data
+  await delay(1000);
 
-  // Opción 1: Usar API real
-  // const response = await fetch(`${API_BASE_URL}/items`, { signal });
-  // if (!response.ok) throw new Error('Error fetching items');
-  // return response.json();
-
-  // Opción 2: Datos mock con delay simulado
-  await delay(1000); // Simula latencia de red
-  return MOCK_ITEMS;
-
-  // Opción 3: Usar JSONPlaceholder como API de prueba
-  // const response = await fetch(`${API_BASE_URL}/posts`, { signal });
-  // const posts = await response.json();
-  // return posts.slice(0, 10).map(post => ({
-  //   id: post.id,
-  //   name: post.title,
-  //   description: post.body,
-  // }));
-};
-
-/**
- * Obtiene estadísticas del dominio
- * TODO: Implementar lógica para calcular/obtener stats de tu dominio
- *
- * @returns Promise con objeto Stats
- *
- * Ejemplos por dominio:
- * - Biblioteca: totalBooks, borrowedToday, availablePercentage
- * - Farmacia: totalProducts, salesCount, lowStockPercentage
- * - Gimnasio: totalMembers, todayAttendance, occupancyPercentage
- */
-export const fetchStats = async (): Promise<Stats> => {
-  // TODO: Implementar fetch o cálculo de estadísticas
-
-  await delay(800);
-
-  return {
-    total: 0, // TODO: Calcular total de elementos
-    active: 0, // TODO: Calcular elementos activos
-    percentage: 0, // TODO: Calcular porcentaje relevante
-    // TODO: Agregar más métricas específicas
-  };
-};
-
-/**
- * Obtiene datos en tiempo real que se actualizan periódicamente
- * TODO: Implementar fetch de dato que cambia frecuentemente
- *
- * @returns Promise con RealTimeData
- *
- * Ejemplos por dominio:
- * - Biblioteca: roomOccupancy (cuántas personas en salas de lectura)
- * - Farmacia: pendingOrders (pedidos sin procesar)
- * - Gimnasio: currentOccupancy (personas actualmente en el gimnasio)
- * - Restaurante: occupiedTables (mesas ocupadas ahora)
- */
-export const fetchRealTimeData = async (): Promise<RealTimeData> => {
-  // TODO: Implementar fetch de dato en tiempo real
-
-  await delay(500);
-
-  // Genera valor aleatorio para simular cambios
-  const randomValue = Math.floor(Math.random() * 100);
-
-  return {
-    value: randomValue,
-    label: 'Dato en Tiempo Real', // TODO: Cambiar label a tu dominio
-    unit: 'unidades', // TODO: Cambiar unidad según tu dominio
-    lastUpdated: new Date().toISOString(),
-  };
-};
-
-/**
- * Busca items por query (opcional)
- * TODO: Implementar si tu dashboard incluye búsqueda/filtrado
- *
- * @param query - Término de búsqueda
- * @returns Promise con array filtrado de Items
- */
-export const searchItems = async (query: string): Promise<Item[]> => {
-  // TODO: Implementar búsqueda
-
-  await delay(600);
-
-  if (!query.trim()) {
-    return MOCK_ITEMS;
+  // Verificar si fue cancelado
+  if (signal?.aborted) {
+    throw new DOMException('Request aborted', 'AbortError');
   }
 
-  // Filtrado simple por nombre
-  return MOCK_ITEMS.filter((item) =>
-    item.name.toLowerCase().includes(query.toLowerCase()),
+  return MOCK_PRODUCTS;
+};
+
+/**
+ * Obtiene estadísticas de la tienda
+ */
+export const fetchStats = async (): Promise<Stats> => {
+  await delay(800);
+
+  const total = MOCK_PRODUCTS.length;
+  const available = MOCK_PRODUCTS.filter((p) => p.available).length;
+  const percentage = Math.round((available / total) * 100);
+  const lowStock = MOCK_PRODUCTS.filter((p) => p.stock > 0 && p.stock <= 5).length;
+
+  return {
+    total,
+    active: available,
+    percentage,
+    dailySales: Math.floor(Math.random() * 20) + 15, // Simular ventas del día
+    lowStock,
+  };
+};
+
+/**
+ * Obtiene pedidos activos en tiempo real (polling)
+ */
+export const fetchRealTimeData = async (): Promise<RealTimeData> => {
+  await delay(300);
+
+  const activeOrders = Math.floor(Math.random() * 30) + 5;
+  const trends: Array<'up' | 'down' | 'stable'> = ['up', 'down', 'stable'];
+  const trend = trends[Math.floor(Math.random() * trends.length)];
+
+  return {
+    value: activeOrders,
+    label: 'Pedidos Activos',
+    unit: 'pedidos',
+    lastUpdated: new Date().toISOString(),
+    trend,
+  };
+};
+
+/**
+ * Busca productos por query
+ */
+export const searchItems = async (query: string): Promise<Item[]> => {
+  await delay(400);
+
+  if (!query.trim()) {
+    return MOCK_PRODUCTS;
+  }
+
+  return MOCK_PRODUCTS.filter(
+    (item) =>
+      item.name.toLowerCase().includes(query.toLowerCase()) ||
+      item.brand.toLowerCase().includes(query.toLowerCase()) ||
+      item.category.toLowerCase().includes(query.toLowerCase()),
   );
 };
 
-// ============================================
-// EJEMPLO DE USO DE JSONPlaceholder API
-// ============================================
-
 /**
- * Ejemplo de cómo adaptar JSONPlaceholder a tu dominio
- * Descomenta y modifica según necesites
+ * Formatea precio en pesos colombianos
  */
-
-// export const fetchItemsFromAPI = async (
-//   signal?: AbortSignal,
-// ): Promise<Item[]> => {
-//   const response = await fetch(
-//     'https://jsonplaceholder.typicode.com/users',
-//     { signal },
-//   );
-//
-//   if (!response.ok) {
-//     throw new Error(`HTTP error! status: ${response.status}`);
-//   }
-//
-//   const users = await response.json();
-//
-//   // Transforma datos de API a tu interfaz Item
-//   return users.map((user: any) => ({
-//     id: user.id,
-//     name: user.name,
-//     description: user.email,
-//     // Agrega más propiedades según tu dominio
-//   }));
-// };
+export const formatPrice = (price: number): string => {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+  }).format(price);
+};

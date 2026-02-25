@@ -3,157 +3,112 @@ import type { Stats } from '../types';
 import { fetchStats } from '../utils/api';
 
 // ============================================
-// COMPONENTE: StatsCard
-// Muestra estadísticas clave del dominio
+// COMPONENTE: StatsCard - Estadísticas de la Tienda
 // ============================================
 
-// NOTA PARA EL APRENDIZ:
-// Este componente debe:
-// 1. Tener múltiples useEffect para diferentes stats
-// 2. Cada stat se carga de forma independiente
-// 3. Manejar loading de cada stat individualmente
-// 4. Mostrar las métricas de forma clara y visual
-
 export const StatsCard: React.FC = () => {
-  // TODO: 1. Definir estados para diferentes stats
-  // Puedes tener un estado Stats o estados separados por métrica
-  // Ejemplo opción 1 (un solo estado):
-  // const [stats, setStats] = useState<Stats | null>(null);
-  // const [loading, setLoading] = useState<boolean>(true);
-  //
-  // Ejemplo opción 2 (estados separados):
-  // const [totalItems, setTotalItems] = useState<number>(0);
-  // const [activeItems, setActiveItems] = useState<number>(0);
-  // const [percentage, setPercentage] = useState<number>(0);
-  // const [loading, setLoading] = useState<boolean>(true);
+  // 1. Estado para estadísticas
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // TODO: 2. Implementar useEffect para cargar stats
-  // useEffect(() => {
-  //   const loadStats = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const data = await fetchStats();
-  //       setStats(data);
-  //     } catch (err) {
-  //       console.error('Error loading stats:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //
-  //   loadStats();
-  // }, []);
+  // Estados independientes por métrica (carga progresiva)
+  const [totalLoaded, setTotalLoaded] = useState(false);
+  const [salesLoaded, setSalesLoaded] = useState(false);
+  const [stockLoaded, setStockLoaded] = useState(false);
 
-  // TODO: 3. (Avanzado) Implementar múltiples efectos independientes
-  // Si tienes 3 stats diferentes, cada uno puede tener su propio useEffect:
-  //
-  // useEffect(() => {
-  //   const loadTotalItems = async () => {
-  //     // Fetch stat 1
-  //   };
-  //   loadTotalItems();
-  // }, []);
-  //
-  // useEffect(() => {
-  //   const loadActiveItems = async () => {
-  //     // Fetch stat 2
-  //   };
-  //   loadActiveItems();
-  // }, []);
-  //
-  // useEffect(() => {
-  //   const loadPercentage = async () => {
-  //     // Fetch stat 3
-  //   };
-  //   loadPercentage();
-  // }, []);
+  // 2. useEffect principal para cargar stats
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchStats();
+        setStats(data);
+      } catch (err) {
+        console.error('Error cargando estadísticas:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // TODO: 4. Renderizado condicional para loading
-  // if (loading) {
-  //   return (
-  //     <div className="stats-card">
-  //       <h2>Cargando estadísticas...</h2>
-  //     </div>
-  //   );
-  // }
+    loadStats();
+  }, []);
 
-  // TODO: 5. Renderizado principal: mostrar stats
+  // 3. Múltiples efectos independientes para animación de carga progresiva
+  useEffect(() => {
+    if (!stats) return;
+    const t1 = setTimeout(() => setTotalLoaded(true), 100);
+    return () => clearTimeout(t1);
+  }, [stats]);
+
+  useEffect(() => {
+    if (!stats) return;
+    const t2 = setTimeout(() => setSalesLoaded(true), 300);
+    return () => clearTimeout(t2);
+  }, [stats]);
+
+  useEffect(() => {
+    if (!stats) return;
+    const t3 = setTimeout(() => setStockLoaded(true), 500);
+    return () => clearTimeout(t3);
+  }, [stats]);
+
+  // 4. Renderizado condicional para loading
+  if (loading || !stats) {
+    return (
+      <div className="stats-card">
+        <h2>📊 Estadísticas de la Tienda</h2>
+        <div className="stats-grid">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <div key={n} className="stat stat-skeleton">
+              <div className="skeleton-value" />
+              <div className="skeleton-label" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="stats-card">
-      <h2>Estadísticas</h2>
-      {/* TODO: Cambiar título según tu dominio */}
+      <h2>📊 Estadísticas de la Tienda</h2>
 
       <div className="stats-grid">
-        {/* TODO: Stat 1 - Total de elementos */}
-        <div className="stat">
-          <div className="stat-value">{/* TODO: Mostrar valor */}</div>
-          <div className="stat-label">Total</div>
-          {/* TODO: Cambiar label según tu dominio */}
-          {/* Ejemplos: "Total de Libros", "Productos", "Miembros" */}
+        {/* Stat 1: Total de productos */}
+        <div className={`stat stat-blue ${totalLoaded ? 'stat-visible' : ''}`}>
+          <div className="stat-icon">📦</div>
+          <div className="stat-value">{stats.total}</div>
+          <div className="stat-label">Total Productos</div>
         </div>
 
-        {/* TODO: Stat 2 - Elementos activos/disponibles */}
-        <div className="stat">
-          <div className="stat-value">{/* TODO: Mostrar valor */}</div>
-          <div className="stat-label">Activos</div>
-          {/* TODO: Cambiar label según tu dominio */}
-          {/* Ejemplos: "Disponibles", "En Stock", "Activos Hoy" */}
+        {/* Stat 2: Productos disponibles */}
+        <div className={`stat stat-green ${totalLoaded ? 'stat-visible' : ''}`}>
+          <div className="stat-icon">✅</div>
+          <div className="stat-value">{stats.active}</div>
+          <div className="stat-label">Disponibles</div>
         </div>
 
-        {/* TODO: Stat 3 - Porcentaje o métrica calculada */}
-        <div className="stat">
-          <div className="stat-value">{/* TODO: Mostrar valor */}%</div>
-          <div className="stat-label">Ocupación</div>
-          {/* TODO: Cambiar label según tu dominio */}
-          {/* Ejemplos: "Disponibilidad", "Ocupación", "Tasa de Ventas" */}
+        {/* Stat 3: Porcentaje de disponibilidad */}
+        <div className={`stat stat-purple ${salesLoaded ? 'stat-visible' : ''}`}>
+          <div className="stat-icon">📈</div>
+          <div className="stat-value">{stats.percentage}%</div>
+          <div className="stat-label">Disponibilidad</div>
         </div>
 
-        {/* TODO: (Opcional) Agregar más stats específicos de tu dominio */}
-        {/* Ejemplos adicionales:
-        - Biblioteca: "Préstamos Hoy", "Salas Disponibles"
-        - Farmacia: "Ventas del Día", "Stock Bajo"
-        - Gimnasio: "Asistencias Hoy", "Clases Activas"
-        - Restaurante: "Pedidos Activos", "Promedio de Calificación"
-        */}
+        {/* Stat 4: Ventas del día */}
+        <div className={`stat stat-orange ${salesLoaded ? 'stat-visible' : ''}`}>
+          <div className="stat-icon">💰</div>
+          <div className="stat-value">{stats.dailySales}</div>
+          <div className="stat-label">Ventas Hoy</div>
+        </div>
+
+        {/* Stat 5: Productos con stock bajo */}
+        <div className={`stat ${stats.lowStock > 0 ? 'stat-red' : 'stat-green'} ${stockLoaded ? 'stat-visible' : ''}`}>
+          <div className="stat-icon">⚠️</div>
+          <div className="stat-value">{stats.lowStock}</div>
+          <div className="stat-label">Stock Bajo</div>
+        </div>
       </div>
     </div>
   );
 };
-
-// ============================================
-// ESTILOS SUGERIDOS
-// ============================================
-
-// .stats-card {
-//   padding: 20px;
-//   background: white;
-//   border-radius: 8px;
-//   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-// }
-//
-// .stats-grid {
-//   display: grid;
-//   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-//   gap: 16px;
-//   margin-top: 16px;
-// }
-//
-// .stat {
-//   text-align: center;
-//   padding: 16px;
-//   background: #f8f9fa;
-//   border-radius: 8px;
-// }
-//
-// .stat-value {
-//   font-size: 2.5rem;
-//   font-weight: bold;
-//   color: #2c3e50;
-// }
-//
-// .stat-label {
-//   font-size: 0.9rem;
-//   color: #7f8c8d;
-//   margin-top: 8px;
-//   text-transform: uppercase;
-// }
