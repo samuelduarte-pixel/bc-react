@@ -1,8 +1,3 @@
-// ============================================
-// COMPONENTE: SortSelector
-// ============================================
-// Selector de criterio de ordenamiento
-
 import React from 'react';
 import { SortOption } from '../types';
 import { sortOptions } from '../data/items';
@@ -12,19 +7,10 @@ interface SortSelectorProps {
   onChange: (value: SortOption) => void;
 }
 
-/**
- * Selector de ordenamiento
- */
-export const SortSelector: React.FC<SortSelectorProps> = ({
-  value,
-  onChange,
-}) => {
-  // TODO: Implementar el selector
-
+export const SortSelector: React.FC<SortSelectorProps> = ({ value, onChange }) => {
   return (
     <div className="sort-selector">
-      {/* TODO: Label y select */}
-      {/* <label htmlFor="sort">Ordenar por:</label>
+      <label htmlFor="sort">Ordenar por</label>
       <select
         id="sort"
         value={value}
@@ -35,9 +21,7 @@ export const SortSelector: React.FC<SortSelectorProps> = ({
             {opt.label}
           </option>
         ))}
-      </select> */}
-
-      <p>Implementar selector aquí</p>
+      </select>
     </div>
   );
 };

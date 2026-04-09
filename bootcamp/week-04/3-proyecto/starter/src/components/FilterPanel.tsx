@@ -1,8 +1,3 @@
-// ============================================
-// COMPONENTE: FilterPanel
-// ============================================
-// Panel con todos los filtros
-
 import React from 'react';
 import { Category } from '../types';
 import { categories } from '../data/items';
@@ -15,9 +10,6 @@ interface FilterPanelProps {
   onClearFilters: () => void;
 }
 
-/**
- * Panel de filtros del catálogo
- */
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   selectedCategory,
   onCategoryChange,
@@ -25,13 +17,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onAvailableChange,
   onClearFilters,
 }) => {
-  // TODO: Implementar los filtros
-
   return (
     <div className="filter-panel">
-      {/* TODO: Selector de categoría */}
-      {/* <div className="filter-group">
-        <label htmlFor="category">Categoría:</label>
+      <div className="filter-group">
+        <label htmlFor="category">Categoría</label>
         <select
           id="category"
           value={selectedCategory}
@@ -43,26 +32,22 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </option>
           ))}
         </select>
-      </div> */}
+      </div>
 
-      {/* TODO: Checkbox de disponibilidad */}
-      {/* <div className="filter-group">
-        <label>
+      <div className="filter-group checkbox-group">
+        <label className="checkbox-label">
           <input
             type="checkbox"
             checked={showOnlyAvailable}
             onChange={(e) => onAvailableChange(e.target.checked)}
           />
-          Solo disponibles
+          <span>Solo disponibles</span>
         </label>
-      </div> */}
+      </div>
 
-      {/* TODO: Botón limpiar filtros */}
-      {/* <button onClick={onClearFilters} className="btn-clear">
+      <button onClick={onClearFilters} className="btn-clear">
         🔄 Limpiar filtros
-      </button> */}
-
-      <p>Implementar filtros aquí</p>
+      </button>
     </div>
   );
 };

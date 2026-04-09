@@ -1,8 +1,3 @@
-// ============================================
-// COMPONENTE: SearchBar
-// ============================================
-// Barra de búsqueda en tiempo real
-
 import React from 'react';
 
 interface SearchBarProps {
@@ -11,29 +6,22 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-/**
- * Barra de búsqueda
- */
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
-  placeholder = 'Buscar...',
+  placeholder = 'Buscar productos...',
 }) => {
-  // TODO: Implementar el input de búsqueda
-
   return (
     <div className="search-bar">
-      {/* TODO: Input de búsqueda */}
-      {/* <input
+      <span className="search-icon">🔍</span>
+      <input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="search-input"
-      /> */}
-
-      {/* TODO: Botón para limpiar (condicional) */}
-      {/* {value && (
+      />
+      {value && (
         <button
           onClick={() => onChange('')}
           className="clear-button"
@@ -41,9 +29,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         >
           ✕
         </button>
-      )} */}
-
-      <input placeholder={placeholder} />
+      )}
     </div>
   );
 };

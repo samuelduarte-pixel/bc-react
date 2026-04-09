@@ -1,35 +1,29 @@
 // ============================================
-// TIPOS E INTERFACES
+// TIPOS E INTERFACES - Sportyk Retail
 // ============================================
-// Adapta estos tipos a tu dominio asignado
 
-// TODO: Renombrar según tu dominio
-// Ejemplos: Book, Medicine, GymClass, Dish, Doctor, Vehicle
 export interface Item {
   id: number;
   name: string;
-  // TODO: Agregar propiedades de tu dominio
-  // Ejemplos:
-  // author: string;         // Biblioteca
-  // laboratory: string;     // Farmacia
-  // instructor: string;     // Gimnasio
-  // chef: string;           // Restaurante
-  category: string;
+  brand: string;
+  category: Category;
   price: number;
   rating: number;
   isAvailable: boolean;
   createdAt: string;
+  description: string;
+  sport: string;
 }
 
-// Categorías de tu dominio
-// TODO: Adaptar las categorías
-export type Category = 'all' | 'category1' | 'category2' | 'category3';
-// Ejemplos:
-// Biblioteca: 'fiction' | 'non-fiction' | 'science' | 'history'
-// Farmacia: 'analgesicos' | 'antibioticos' | 'vitaminas'
-// Gimnasio: 'cardio' | 'fuerza' | 'yoga' | 'spinning'
+export type Category =
+  | 'all'
+  | 'running'
+  | 'cycling'
+  | 'swimming'
+  | 'gym'
+  | 'team_sports'
+  | 'outdoor';
 
-// Opciones de ordenamiento
 export type SortOption =
   | 'name-asc'
   | 'name-desc'
@@ -37,12 +31,9 @@ export type SortOption =
   | 'price-desc'
   | 'rating';
 
-// Estado de los filtros
 export interface FilterState {
   searchTerm: string;
   category: Category;
   showOnlyAvailable: boolean;
   sortBy: SortOption;
-  minPrice?: number;
-  maxPrice?: number;
 }

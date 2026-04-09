@@ -1,8 +1,3 @@
-// ============================================
-// COMPONENTE: EmptyState
-// ============================================
-// Muestra mensaje cuando no hay elementos
-
 import React from 'react';
 
 interface EmptyStateProps {
@@ -10,24 +5,17 @@ interface EmptyStateProps {
   onClearFilters?: () => void;
 }
 
-/**
- * Estado vacío del catálogo
- */
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  message = 'No se encontraron elementos',
+  message = 'No se encontraron productos',
   onClearFilters,
 }) => {
   return (
     <div className="empty-state">
-      <span className="icon">📭</span>
+      <span className="icon">🏋️</span>
       <h3>Sin resultados</h3>
       <p>{message}</p>
-
-      {/* Botón condicional para limpiar filtros */}
       {onClearFilters && (
-        <button
-          onClick={onClearFilters}
-          className="btn-clear">
+        <button onClick={onClearFilters} className="btn-clear">
           Limpiar filtros
         </button>
       )}

@@ -1,9 +1,3 @@
-// ============================================
-// COMPONENTE: ItemCard
-// ============================================
-// Muestra una tarjeta con la información de un elemento
-// TODO: Adaptar a tu dominio
-
 import React from 'react';
 import { Item } from '../types';
 
@@ -13,53 +7,70 @@ interface ItemCardProps {
   onView?: (id: number) => void;
 }
 
-/**
- * Tarjeta de elemento del catálogo
- * TODO: Personalizar según tu dominio
- */
-export const ItemCard: React.FC<ItemCardProps> = ({
-  item,
-  onDelete,
-  onView,
-}) => {
-  // TODO: Implementar el componente
-  // 1. Mostrar nombre del elemento
-  // 2. Mostrar categoría con badge de color
-  // 3. Mostrar precio formateado
-  // 4. Mostrar rating con estrellas
-  // 5. Mostrar estado de disponibilidad (condicional)
-  // 6. Botones de acción (ver, eliminar)
+const categoryColors: Record<string, string> = {
+  running: '#ff6b35',
+  cycling: '#4ecdc4',
+  swimming: '#45b7d1',
+  gym: '#96e6a1',
+  team_sports: '#ffd93d',
+  outdoor: '#a8e063',
+};
+
+const renderStars = (rating: number): string => {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
+};
+
+export const ItemCard: React.FC<ItemCardProps> = ({ item, onDelete, onView }) => {
+  const badgeColor = categoryColors[item.category] ?? '#ccc';
 
   return (
-    <div className="item-card">
-      {/* TODO: Implementar contenido */}
-      <h3>{item.name}</h3>
+    <div className={`item-card ${!item.isAvailable ? 'unavailable' : ''}`}>
+      {/* Badge de categoría */}
+      <span
+        className="category-badge"
+        style={{ backgroundColor: badgeColor }}
+      >
+        {item.sport}
+      </span>
 
-      {/* Renderizado condicional del badge de categoría */}
-      {/* <span className={`badge ${item.category}`}>{item.category}</span> */}
-
-      {/* Precio */}
-      {/* <p className="price">${item.price.toFixed(2)}</p> */}
-
-      {/* Rating */}
-      {/* <p className="rating">⭐ {item.rating}</p> */}
-
-      {/* Estado de disponibilidad - Renderizado condicional */}
-      {/* {item.isAvailable ? (
-        <span className="status available">✅ Disponible</span>
+      {/* Estado de disponibilidad */}
+      {item.isAvailable ? (
+        <span className="status available">● En stock</span>
       ) : (
-        <span className="status unavailable">❌ No disponible</span>
-      )} */}
+        <span className="status unavailable">● Agotado</span>
+      )}
+
+      {/* Contenido principal */}
+      <div className="card-body">
+        <p className="brand">{item.brand}</p>
+        <h3 className="item-name">{item.name}</h3>
+        <p className="description">{item.description}</p>
+
+        {/* Rating */}
+        <div className="rating-row">
+          <span className="stars">{renderStars(item.rating)}</span>
+          <span className="rating-value">{item.rating.toFixed(1)}</span>
+        </div>
+
+        {/* Precio */}
+        <p className="price">${item.price.toFixed(2)}</p>
+      </div>
 
       {/* Acciones */}
-      {/* <div className="actions">
+      <div className="card-actions">
         {onView && (
-          <button onClick={() => onView(item.id)}>Ver detalles</button>
+          <button className="btn-view" onClick={() => onView(item.id)}>
+            Ver detalles
+          </button>
         )}
         {onDelete && (
-          <button onClick={() => onDelete(item.id)}>Eliminar</button>
+          <button className="btn-delete" onClick={() => onDelete(item.id)}>
+            🗑
+          </button>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };
